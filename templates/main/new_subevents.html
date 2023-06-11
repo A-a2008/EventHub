@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'events_display' %}">My Events</a></li>
+<li><a href="/subevents/{{ event_id }}/">Subevents</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'events_display' %}">
+        <h3>My Events</h3>
+        <p>View all of your current events</p>
+    </a>
+</li>
+<li>
+    <a href="/subevents/{{ event_id }}/">
+        <h3>Subevents</h3>
+        <p>View all the subevents</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">Subevents</a></h2>
+            <p>Create your subevents here</p>
+        </div>
+    </header>
+    <p>Give the details of the subevents:</p>
+    <form action="/subevent/new_process/{{ event_id }}/" method="post">
+        {% csrf_token %}
+        Name: <input type="text" name="subevent_name" placeholder="Subevent Name" required ><br />
+        <input type="submit" value="Create" />
+    </form>
+    <a href="/subevents/{{ event_id }}" class="button">Stop Creating</a>
+</article>
+{% endblock %}

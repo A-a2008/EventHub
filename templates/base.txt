@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>$Title$</h2>
+            <p>$Subtitle$</p>
+        </div>
+    </header>
+    <p>$Content$</p>
+</article>
+{% endblock %}

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html>
+	<head>
+		<title>EventHub</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="/">EventHub</a></h1>
+						<nav class="links">
+							<ul>
+								{% if not user.is_authenticated %}
+								<li><a href="{% url 'login' %}">Login</a></li>
+								<li><a href="{% url 'register' %}">Register</a></li>
+								{% else %}
+								<li><a href="{% url 'new_event_page' %}">New Event</a></li>
+								<li><a href="{% url 'events_display' %}">My Events</a></li>
+								<li>Hi, {{ user.first_name }}</li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+								{% if user.is_superuser %}
+								<li><a href="/admin" target="_blank">Admin Page</a></li>
+								{% endif %}
+								{% endif %}
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">
+
+						{% if user.is_authenticated %}
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									
+									<li>
+										<a href="{% url 'new_event_page' %}">
+											<h3>New Event</h3>
+											<p>Create a new event</p>
+										</a>
+									</li>
+									<li>
+										<a href="{% url 'events_display' %}">
+											<h3>My Events</h3>
+											<p>View all of your current events</p>
+										</a>
+									</li>
+								</ul>
+							</section>
+						{% endif %}
+
+						<!-- Actions -->
+							<section>
+								{% if user.is_authenticated %}
+								<ul class="actions stacked">
+									<li><a href="{% url 'logout' %}" class="button large fit">Logout</a></li>
+								</ul>
+								{% else %}
+								<ul class="actions stacked">
+									<li><a href="{% url 'login' %}" class="button large fit">Log In</a></li>
+								</ul>
+								<ul class="actions stacked">
+									<li><a href="{% url 'register' %}" class="button large fit">Register</a></li>
+								</ul>
+								{% endif %}
+							</section>
+
+					</section>
+
+				<!-- Main -->
+					<div id="main">
+
+						{% if not user.is_authenticated %}
+						<article class="post">
+							<header>
+								<div class="title">
+									<h2>Welcome to EventHub</h2>
+								</div>
+							</header>
+							<p>Please login or register yourself in this website to access everything.</p>
+							<a href="{% url 'login' %}" class="button large">Log In</a></li>
+							<a href="{% url 'register' %}" class="button large">Register</a></li>
+						</article>
+						{% else %}
+						<article class="post">
+							<header>
+								<div class="title">
+									<h2><a href="/">EventHub</a></h2>
+								</div>
+							</header>
+							<p>
+								Welcome to <b>EventHub</b>.
+							</p>
+							<p>
+								Since you are logged in, you can explore our website fully.
+							</p>
+							<p>
+								This website helps you to manage events. <br><br>
+								There are mainly 2 ways you are going to use this website:
+								<ol>
+									<li>You can create events and share it with others.</li>
+									<li>You can join events shared to you by others.</li>
+								</ol>
+								For both the types, you can see all of your events in <a href="{% url 'events_display' %}">'My Events'</a> page.
+							</p>
+							<p>
+								<font size="6">ENJOY!</font>
+							</p>
+						</article>
+						{% endif %}
+
+					</div>
+
+				<!-- Sidebar -->
+					<section id="sidebar">
+
+						<!-- Intro -->
+							<section id="intro">
+								<a href="/" class="logo"><img src="{% static 'images/your-bag-logo.png' %}" alt="" /></a>
+								<header>
+									<h2><a href="/">EventHub</a></h2>
+									<p>Organise your events like never before</a></p>
+								</header>
+							</section>
+
+						<!-- About -->
+							<section class="blurb">
+								<h2>Developer Info:</h2>
+								<p>Developed by: Aryan R <br>
+								Email: <a href="mailto:aryan.rajalbandi@gmail.com">aryan.rajalbandi@gmail.com</a></p>
+							</section>
+
+						<!-- Footer -->
+							<section id="footer">
+								<ul class="icons">
+									<li><a href="https://www.instagram.com/pythyan/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+									<li><a href="mailto:aryan.rajalbandi@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'new_event_page' %}">New Event</a></li>
+<li><a href="/myevents/">My Events</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'new_event_page' %}">
+        <h3>New Event</h3>
+        <p>Create a new event</p>
+    </a>
+</li>
+<li>
+    <a href="/myevents/">
+        <h3>My Events</h3>
+        <p>View all your current events</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">New Event</a></h2>
+            <p>Create a new Event</p>
+        </div>
+    </header>
+    <p>Give the details of the event:</p>
+    <form action="/event/new_process/" method="post">
+        {% csrf_token %}
+        Name: <input type="text" name="event_name" placeholder="Event Name" required ><br />
+        Description: <textarea name="event_description" rows="4" placeholder="Give a description of the event"></textarea><br />
+        <input type="submit" value="Create" /> &nbsp; &nbsp; <a href="/myevents/" class="button">No, Go Back</a>
+    </form>
+</article>
+{% endblock %}

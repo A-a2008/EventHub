@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>Register</h2>
+            <p>Register to EventHub to fully use it's features</p>
+        </div>
+    </header>
+    <form action="/accounts/register/" method="post">
+        {% csrf_token %}
+        {% for message in messages %}
+        <font color="red">{{ message }} <br /></font><br />
+        {% endfor %}
+        First Name: <input type="text" name="first_name" placeholder="First Name" required ><br />
+        Last Name: <input type="text" name="last_name" placeholder="Last Name" required ><br />
+        Username: <input type="text" name="username" placeholder="Username" required ><br />
+        Email: <input type="email" name="email" placeholder="Email" required ><br />
+        Password: <input type="password" name="password1" placeholder="Password" required ><br />
+        Password (Confirm): <input type="password" name="password2" placeholder="Password (Confirm)" required ><br /><br />
+        <input type="submit" class="button primary" value="Register">
+        <input type="reset" class="button" value="Reset">
+    </form>
+</article>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'events_display' %}">My Events</a></li>
+<li><a href="/subevents/{{ event.id }}/">Subevents</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'events_display' %}">
+        <h3>My Events</h3>
+        <p>View all of your current events</p>
+    </a>
+</li>
+<li>
+    <a href="/subevents/{{ event.id }}/">
+        <h3>Subevents</h3>
+        <p>View all the subevents</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>Manage {{ event.name }}</h2>
+        </div>
+    </header>
+    <p>
+        <form action="/event/edit_name/{{ event.id }}/" method="post">
+            {% csrf_token %}
+            Change Event name: <input type="text" name="event_name" value="{{ event.name }}" /><br>
+            <input type="submit" value="Change">
+        </form>
+        <hr>
+        <h2>Download Files</h2>
+        <form action="/download_files/{{ event.id }}/" method="POST" >
+            {% csrf_token %}
+            <input type="checkbox" id="checkbox" name="duration_check">
+            <label for="checkbox">Download all the files as a single music file?</label>
+            <br>
+            <div id="single-file-duration">
+                No. of seconds each music file should be seperated with:
+                <input type="number" id="input-value" name="duration">
+            </div>
+            <br>
+            <input type="submit" value="Download">
+        </form>
+        <hr>
+        <h2><a href="/share_event/{{ event.id }}/">Add users</a></h2>
+        <hr>
+        <h2>Remove users</h2>
+        <form action="/manage_event/{{ event.id }}/" method="post">
+            {% csrf_token %}
+            <h3>Admins</h3>
+            {% if event.creators.count > 1 %}
+            <table class="delete-button">
+                <thead>
+                    <tr>
+                        <th>Admin</th>
+                        <th class="col-2">Remove (check)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for creator in event.creators.all %}
+                    {% if not creator == user %}
+                    <tr>
+                        <td>{{ creator.first_name }} {{ creator.last_name }}</td>
+                        <td class="col-2">
+                            <input type="checkbox" name="creator_{{ creator.email }}" id="{{ creator.email }}" value="{{ creator.id }}">
+                            <label for="{{ creator.email }}"></label>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>There are no creators in "{{ event.name }}" except for you</p>
+            {% endif %}
+
+            <h3>Users</h3>
+            {% if event.users.count > 1 %}
+            <table class="delete-button">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th class="col-2">Remove (check)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person in event.users.all %}
+                    {% if not person == user %}
+                    <tr>
+                        <td>{{ person.first_name }} {{ person.last_name }}</td>
+                        <td class="col-2">
+                            <input type="checkbox" name="user_{{ person.email }}" id="{{ person.email }}" value="{{ person.id }}">
+                            <label for="{{ person.email }}"></label>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>There are no users in "{{ event.name }}" except for you</p>
+            {% endif %}
+            {% if event.creators.count > 1 or event.users.count > 1 %}
+            <input type="submit" value="Update">
+            {% endif %}
+        </form>
+    </p>
+</article>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Function to handle checkbox change event
+        $('#checkbox').change(function() {
+            if ($(this).is(':checked')) {
+                $('#single-file-duration').show(); // Show input field when checkbox is checked
+            } else {
+                $('#single-file-duration').hide(); // Hide input field when checkbox is unchecked
+            }
+        });
+    });
+</script>
+{% endblock %}

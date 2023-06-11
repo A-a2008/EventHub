@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'events_display' %}">My Events</a></li>
+<li><a href="/subevents/{{ event.id }}/">Subevents</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'events_display' %}">
+        <h3>My Events</h3>
+        <p>View all of your current events</p>
+    </a>
+</li>
+<li>
+    <a href="/subevents/{{ event.id }}/">
+        <h3>Subevents</h3>
+        <p>View all your subevents</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>{{ subevent.name }}</h2>
+        </div>
+    </header>
+    <p>
+        {% if creator %}
+        <form action="/subevent/edit_name/{{ subevent.id }}/" method="post">
+            {% csrf_token %}
+            Change Subevent name: <input type="text" name="subevent_name" value="{{ subevent.name }}" /><br>
+            <input type="submit" value="Change">
+        </form>
+        <hr>
+        {% endif %}
+        <form action="/subevent/edit_files_process/{{ subevent.id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file_input">Select a file:</label>
+            <input type="file" id="file_input" name="file" required><br><br>
+            <input type="submit" value="Add">
+        </form>
+        {% if files %}
+        <table class="delete-button">
+            <thead>
+                <tr>
+                    <th>Name of File</th>
+                    <th class="col-2">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order, file in files %}
+                <tr>
+                    <td>{{ file }}</td>
+                    <td class="col-2"><a href="/subevent/delete_file_confirm/{{ subevent.id }}/{{ order }}/" class="button small">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if show_edit_order %}
+        <p>
+            <a href="/subevent/edit_fileorder_page/{{ subevent.id }}/" class="button">Edit Order</a>
+        </p>
+        {% endif %}
+        {% endif %}
+    </p>
+</article>
+{% endblock %}

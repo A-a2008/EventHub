@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="/">Home</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="/">
+        <h3>Home</h3>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">{{ title }}</a></h2>
+            <p>{{ subtitle }}</p>
+        </div>
+    </header>
+    <p>{{ error_detail|safe }}</p>
+    <input onclick="history.back()" type="submit" value="Go Back" />
+</article>
+{% endblock %}

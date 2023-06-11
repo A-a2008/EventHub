@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'events_display' %}">My Events</a></li>
+<li><a href="/subevent/edit_files/{{ subevent_id }}/">Subevent: {{ subevent_name }}</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'events_display' %}">
+        <h3>My Events</h3>
+        <p>View all of your current events</p>
+    </a>
+</li>
+<li>
+    <a href="/subevent/edit_files/{{ subevent_id }}/">
+        <h3>Subevent: {{ subevent_name }}</h3>
+        <p>View "{{ subevent.name }}"</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">File Order</a></h2>
+            <p>Change the order of files for {{ subevent_name }}</p>
+        </div>
+    </header>
+    <p>
+        Change the details:
+        <div class="table-wrapper">
+            <form action="/subevent/edit_fileorder_process/{{ subevent_id }}/" method="post"> 
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Serial Number</th>
+                            <th>Name</th>
+                            <th>Change to</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for order, name, file_id in files_data %}
+                        <tr>
+                            <td>{{ order }}</td>
+                            <td>{{ name }}</td>
+                            <td><input type="text" name="change_{{ file_id }}" value="{{ order }}" ></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <input type="submit" value="Edit" />
+            </form>
+        </div>
+    </p>
+</article>
+{% endblock %}

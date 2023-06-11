@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>Thank you! You are registered for EventHub</h2>
+            <p>Now you can use this website anywhere in the world and access it on the go</p>
+        </div>
+    </header>
+    <dl>
+        <dt>Your Details:</dt>
+        <b>
+            <dd>Name: {{ name }}</dd>
+            <dd>Username: {{ username }}</dd>
+            <dd>Email: {{ email }}</dd>
+        </b>
+    </dl>
+</article>
+{% endblock %}

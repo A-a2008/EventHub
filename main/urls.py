@@ -1,0 +1,32 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("", views.home, name="home"),
+    path("elements/", views.elements, name="elements"),
+    path("base/", views.base, name="base"),
+    path("test/", views.testing, name="testing"),
+    path("event/new/", views.new_event_page, name="new_event_page"),
+    path("event/new_process/", views.new_event_process, name="new_event_process"),
+    path("event/delete_event_confirm/<int:event_id>/", views.delete_event_confirm, name="delete_event_confirm"),
+    path("event/delete_event/<int:event_id>/", views.delete_event, name="delete_event"),
+    path("subevent/new/<int:event_id>/", views.new_subevent_page, name="new_subevent_page"),
+    path("subevent/new_process/<int:event_id>/", views.new_subevent_process, name="new_subevent_process"),
+    path("myevents/", views.events_display, name="events_display"),
+    path("subevents/<int:event_id>/", views.subevents_display, name="subevents_display"),
+    path("subevents/edit_order/<int:event_id>/", views.edit_subevent_order_page, name="edit_subevent_order_page"),
+    path("subevent/edit_order_process/<int:event_id>/", views.edit_subevent_order_process, name="edit_subevent_order_process"),
+    path("subevent/edit_files/<int:subevent_id>/", views.edit_subevent_files_page, name="edit_subevent_files_page"),
+    path("subevent/edit_name/<int:subevent_id>/", views.edit_subevent_name, name="edit_subevent_name"),
+    path("event/edit_name/<int:event_id>/", views.edit_event_name, name="edit_event_name"),
+    path("subevent/edit_files_process/<int:subevent_id>/", views.edit_subevent_files_process, name="edit_subevent_files_process"),
+    path("subevent/edit_fileorder_page/<int:subevent_id>/", views.edit_subevent_fileorder_page, name="edit_subevent_fileorder_page"),
+    path("subevent/edit_fileorder_process/<int:subevent_id>/", views.edit_subevent_fileorder_process, name="edit_subevent_fileorder_process"),
+    path("subevent/delete_file/<int:subevent_id>/<int:file_order>/", views.delete_subevent_file, name="delete_subevent_file"),
+    path("subevent/delete_file_confirm/<int:subevent_id>/<int:file_order>/", views.delete_subevent_file_confirm, name="delete_subevent_file_confirm"),
+    path("subevent/delete_subevent_confirm/<int:subevent_id>/", views.delete_subevent_confirm, name="delete_subevent_confirm"),
+    path("subevent/delete_subevent/<int:subevent_id>/", views.delete_subevent, name="delete_subevent"),
+    path("share_event/<int:event_id>/", views.share_event, name="share_event"),
+    path("manage_event/<int:event_id>/", views.manage_event, name="manage_event"),
+    path("download_files/<int:event_id>/", views.dowload_files, name="download_files"),
+]

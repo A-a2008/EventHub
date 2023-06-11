@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html>
+	<head>
+		<title>EventHub</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+				<header id="header">
+					<h1><a href="/">EventHub</a></h1>
+					<nav class="links">
+						<ul>
+							{% if not user.is_authenticated %}
+							<li><a href="{% url 'login' %}">Login</a></li>
+							<li><a href="{% url 'register' %}">Register</a></li>
+							{% else %}
+							{% block header %}
+							{% endblock %}
+							<li>Hi, {{ user.first_name }}</li>
+							<li><a href="{% url 'logout' %}">Logout</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+					<nav class="main">
+						<ul>
+							<li class="menu">
+								<a class="fa-bars" href="#menu">Menu</a>
+							</li>
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Menu -->
+				<section id="menu">
+
+					{% if user.is_authenticated %}
+					<!-- Links -->
+						<section>
+							<ul class="links">
+								{% block menu %}
+								{% endblock %}
+							</ul>
+						</section>
+					{% endif %}
+
+					<!-- Actions -->
+						<section>
+							{% if user.is_authenticated %}
+							<ul class="actions stacked">
+								<li><a href="{% url 'logout' %}" class="button large fit">Logout</a></li>
+							</ul>
+							{% else %}
+							<ul class="actions stacked">
+								<li><a href="{% url 'login' %}" class="button large fit">Log In</a></li>
+							</ul>
+							<ul class="actions stacked">
+								<li><a href="{% url 'register' %}" class="button large fit">Register</a></li>
+							</ul>
+							{% endif %}
+						</section>
+
+				</section>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+                        {% block content %}
+
+                        {% endblock %}
+                            
+
+					</div>
+
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="{% url 'events_display' %}">My Events</a></li>
+<li><a href="/manage_event/{{ event.id }}/">Manage Event</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="{% url 'events_display' %}">
+        <h3>My Events</h3>
+        <p>View all of your current events</p>
+    </a>
+</li>
+<li>
+    <a href="/manage_event/{{ event.id }}/">
+        <h3>Manage Event</h3>
+        <p>Manage "{{ event.name }}"</p>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2>Download Files</h2>
+        </div>
+    </header>
+    <p>
+        <a href="{{ zip_file }}" downlaod>Click here to download the zip file.</a>
+    </p>
+</article>
+{% endblock %}
