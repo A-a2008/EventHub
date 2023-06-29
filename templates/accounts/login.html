@@ -17,6 +17,7 @@
         <font size="3">Not a User? <a href="/accounts/register">Register</a> yourself here</font><br /><br />
         Username: <input type="text" name="username" placeholder="Username" required ><br />
         Password: <input type="password" name="password" placeholder="Password" required ><br>
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <input type='submit' class="button primary" value="Login">
         <input type="reset" class="button" value="Reset">
     </form>

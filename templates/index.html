@@ -21,11 +21,13 @@
 								{% if not user.is_authenticated %}
 								<li><a href="{% url 'login' %}">Login</a></li>
 								<li><a href="{% url 'register' %}">Register</a></li>
+								<li><a href="{% url 'verify_email' %}">Forgot Password</a></li>
 								{% else %}
 								<li><a href="{% url 'new_event_page' %}">New Event</a></li>
 								<li><a href="{% url 'events_display' %}">My Events</a></li>
 								<li>Hi, {{ user.first_name }}</li>
 								<li><a href="{% url 'logout' %}">Logout</a></li>
+								<li><a href="{% url 'verify_email' %}">Change Password</a></li>
 								{% if user.is_superuser %}
 								<li><a href="/admin" target="_blank">Admin Page</a></li>
 								{% endif %}
@@ -71,12 +73,18 @@
 								<ul class="actions stacked">
 									<li><a href="{% url 'logout' %}" class="button large fit">Logout</a></li>
 								</ul>
+								<ul class="actions stacked">
+									<li><a href="{% url 'verify_email' %}" class="button large fit">Change Password</a></li>
+								</ul>
 								{% else %}
 								<ul class="actions stacked">
 									<li><a href="{% url 'login' %}" class="button large fit">Log In</a></li>
 								</ul>
 								<ul class="actions stacked">
 									<li><a href="{% url 'register' %}" class="button large fit">Register</a></li>
+								</ul>
+								<ul class="actions stacked">
+									<li><a href="{% url 'verify_email' %}" class="button large fit">Forgot Password</a></li>
 								</ul>
 								{% endif %}
 							</section>
@@ -93,9 +101,18 @@
 									<h2>Welcome to EventHub</h2>
 								</div>
 							</header>
-							<p>Please login or register yourself in this website to access everything.</p>
-							<a href="{% url 'login' %}" class="button large">Log In</a></li>
-							<a href="{% url 'register' %}" class="button large">Register</a></li>
+							<p>
+								This website helps you to manage events. <br><br>
+								There are mainly 2 ways you are going to use this website:
+								<ol>
+									<li>You can create events and share it with others.</li>
+									<li>You can join events shared to you by others.</li>
+								</ol>
+								For both the types, you can see all of your events in <a href="{% url 'events_display' %}">'My Events'</a> page.
+							</p>
+							<p>
+								<font size="6">ENJOY!</font>
+							</p>
 						</article>
 						{% else %}
 						<article class="post">

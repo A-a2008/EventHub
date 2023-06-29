@@ -9,17 +9,15 @@
 </head>
 <body>
     <div style="background-color:#eee; padding:10px 20px;">
-        <h2 style="color:#454349;">Verifying OTP</h2>
+        <h2 style="color:#454349;">Event Invite!</h2>
     </div>
     <div style="padding:20px 0px">
         <div style="height: 500px;width:400px">
             <img src="https://dummyimage.com/500x300/000/fff&text=EventHub" style="height: 300px;">
             <div style="text-align:center;">
-                <h3>Verifying OTP</h3>
-                <p>Hello, it seems like you are trying to change your password.</p>
-                <p>Well beware, somebody wants to login to your account, but if it is you, it is fine.</p>
-                <p>The Verification OTP is <b>{{ otp }}</b></p>
-                <p>I hope you were able to change your password... 😄😄😄</p><br /><br />
+                <h3>You have recieved an Event Invite!</h3>
+                <p>Greetings {{ user_name }}! You have been invited to the event <b>"{{ event_name }}"</b>.</p>
+                <p>Please log into your account to see this event. <br>If you haven't created an account yet, you can create it <a href="https://eventhub.pythonanywhere.com/myevents/">here!</a></p>
                 <p>Regards, <br />EventHub</p>
             </div>
         </div>

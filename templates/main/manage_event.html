@@ -49,7 +49,7 @@
             <input type="submit" value="Download">
         </form>
         <hr>
-        <h2><a href="/share_event/{{ event.id }}/">Add users</a></h2>
+        <h2><a href="/share_event/{{ event.id }}/">Add / Change Permissions of Users</a></h2>
         <hr>
         <h2>Remove users</h2>
         <form action="/manage_event/{{ event.id }}/" method="post">
@@ -82,7 +82,7 @@
             {% endif %}
 
             <h3>Users</h3>
-            {% if event.users.count > 1 %}
+            {% if event.users.count > 0 %}
             <table class="delete-button">
                 <thead>
                     <tr>
@@ -105,9 +105,9 @@
                 </tbody>
             </table>
             {% else %}
-            <p>There are no users in "{{ event.name }}" except for you</p>
+            <p>There are no users in "{{ event.name }}"</p>
             {% endif %}
-            {% if event.creators.count > 1 or event.users.count > 1 %}
+            {% if event.creators.count > 1 or event.users.count > 0 %}
             <input type="submit" value="Update">
             {% endif %}
         </form>

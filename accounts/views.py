@@ -3,7 +3,12 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.template.loader import get_template, render_to_string
+from django.apps import apps
 import random
+
+Event = apps.get_model('main', "Event")
+SubEvents = apps.get_model('main', "SubEvents")
+InvitedPerson = apps.get_model('main', "InvitedPerson")
 
 # Create your views here.
 
@@ -34,6 +39,24 @@ def register(request):
                 }
                 user = auth.authenticate(username=username, password=password1)
                 auth.login(request, user)
+
+                invited_events = InvitedPerson.objects.filter(email=email)
+                for invited_event in invited_events:
+                    event = Event.objects.get(id=invited_event.event_id)
+                    if invited_event.creator:
+                        event.creators.add(user)
+                        all_subevents = SubEvents.objects.filter(event=event)
+                        for subevent in all_subevents:
+                            subevent.users.add(user)
+                    else:
+                        event.users.add(user)
+                        subevent_ids = str(invited_event.subevents).split(" ")[:-1]
+                        print(subevent_ids)
+                        for subevent_id in subevent_ids:
+                            subevent = SubEvents.objects.get(id=subevent_id)
+                            subevent.users.add(user)
+                    invited_event.delete()
+
                 return render(request, 'accounts/registered.html', data)
 
             elif User.objects.filter(username=username).exists():
@@ -56,11 +79,14 @@ def login(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
+        next_url = request.POST['next']
 
         user = auth.authenticate(username=username, password=password)
 
         if user is not None:
             auth.login(request, user)
+            if next_url:
+                return redirect(next_url)
             return redirect('/')
         else:
             messages.info(request, 'Invalid Credentials')
@@ -88,7 +114,7 @@ def reset_password_verify_email(request):
             }
             html_email = get_template("../templates/accounts/email.html").render(email_data)
             print(html_email)
-            from_email = 'dotforstudents@gmail.com' # TODO: Change the email SMTP in settings and in this file
+            from_email = 'email'
             email_msg = EmailMessage(
                 subject,
                 html_email,

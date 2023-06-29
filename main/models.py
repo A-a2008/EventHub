@@ -31,3 +31,13 @@ class Files(Model):
 
     def __str__(self) -> str:
         return self.sub_events.name
+    
+
+class InvitedPerson(Model):
+    email = models.EmailField()
+    event_id = models.IntegerField()
+    creator = models.BooleanField()
+    subevents = models.CharField(max_length=1000)
+
+    def __str__(self) -> str:
+        return self.email

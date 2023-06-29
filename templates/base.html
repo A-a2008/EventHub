@@ -21,11 +21,15 @@
 							{% if not user.is_authenticated %}
 							<li><a href="{% url 'login' %}">Login</a></li>
 							<li><a href="{% url 'register' %}">Register</a></li>
+							<li><a href="{% url 'verify_email' %}">Forgot Password</a></li>
 							{% else %}
 							{% block header %}
 							{% endblock %}
 							<li>Hi, {{ user.first_name }}</li>
 							<li><a href="{% url 'logout' %}">Logout</a></li>
+							{% if user.is_superuser %}
+							<li><a href="/admin" target="_blank">Admin Page</a></li>
+							{% endif %}
 							{% endif %}
 						</ul>
 					</nav>
@@ -57,12 +61,18 @@
 							<ul class="actions stacked">
 								<li><a href="{% url 'logout' %}" class="button large fit">Logout</a></li>
 							</ul>
+							<ul class="actions stacked">
+								<li><a href="{% url 'verify_email' %}" class="button large fit">Change Password</a></li>
+							</ul>
 							{% else %}
 							<ul class="actions stacked">
 								<li><a href="{% url 'login' %}" class="button large fit">Log In</a></li>
 							</ul>
 							<ul class="actions stacked">
 								<li><a href="{% url 'register' %}" class="button large fit">Register</a></li>
+							</ul>
+							<ul class="actions stacked">
+								<li><a href="{% url 'verify_email' %}" class="button large fit">Forgot Password</a></li>
 							</ul>
 							{% endif %}
 						</section>

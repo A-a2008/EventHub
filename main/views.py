@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
 import os
 import zipfile
 from pydub import AudioSegment
@@ -16,10 +18,11 @@ import pytz
 Event = apps.get_model('main', "Event")
 SubEvents = apps.get_model('main', "SubEvents")
 Files = apps.get_model('main', "Files")
+InvitedPerson = apps.get_model('main', "InvitedPerson")
 
-timezone_asia = pytz.timezone("Asia/Kolkata")
-current_time = datetime.now(timezone_asia).strftime("%I-%M-%S %p")
-logging.basicConfig(level=logging.INFO, filename=f"./logs/log {timezone.now().date().strftime('%d-%m-%Y')} {current_time}.log", filemode="w")
+# timezone_asia = pytz.timezone("Asia/Kolkata")
+# current_time = datetime.now(timezone_asia).strftime("%I-%M-%S %p")
+# logging.basicConfig(level=logging.INFO, filename=f"./logs/log {timezone.now().date().strftime('%d-%m-%Y')} {current_time}.log", filemode="w")
 
 # Create your views here.
 
@@ -590,8 +593,11 @@ def share_event(request, event_id):
             print(subevents)
 
             if shared_to:
+                updated = False
                 if creator:
                     if shared_to not in event.creators.all():
+                        if shared_to in event.users.all():
+                            event.users.remove(shared_to)
                         event.creators.add(shared_to)
                         all_subevents = SubEvents.objects.filter(event=event)
                         for subevent in all_subevents:
@@ -610,6 +616,7 @@ def share_event(request, event_id):
                         for subevent in subevents:
                             subevent.users.add(shared_to)
                     else:
+                        updated = True
                         all_subevents = SubEvents.objects.filter(event=event)
                         for subevent in all_subevents:
                             subevent.users.remove(shared_to)
@@ -619,16 +626,52 @@ def share_event(request, event_id):
                 data = {
                     'event': event,
                     'user_to': shared_to,
+                    'user_created': True,
                 }
+
+                if not updated:
+                    event_invite_email(event.name, email, shared_to.first_name)
 
                 return render(request, "main/event_shared.html", data)
             else:
+                updated = False
+                subevents_allowed = ""
+                for subevent in subevents:
+                    subevents_allowed += f"{subevent.id} "
+
+                print(subevents_allowed)
+
+                invited_user = InvitedPerson.objects.filter(
+                    models.Q(email=email) | models.Q(event_id=event_id)
+                ).first()
+
+                if invited_user:
+                    invited_user.event_id = event_id
+                    invited_user.creator = creator
+                    invited_user.subevents = subevents_allowed
+                    invited_user.save()
+                    updated = True
+                else:
+                    InvitedPerson.objects.create(
+                        email=email,
+                        event_id=event_id,
+                        creator=creator,
+                        subevents=subevents_allowed,
+                    )
+
+                print(subevents_allowed.split(" "))
+
                 data = {
-                    'title': "User doesn't exist",
-                    'error_detail': f'To share this event with <b>"{email}"</b>, please make sure they have an account in this website.'
+                    'event': event,
+                    'user_to': email,
+                    'user_created': False,
+                    'updated': updated,
                 }
 
-                return render(request, "errors/error.html", data)
+                if not updated:
+                    event_invite_email(event.name, email, "user")
+
+                return render(request, "main/event_shared.html", data)
             
         else:
             subevents = SubEvents.objects.filter(event=event)
@@ -786,3 +829,20 @@ def single_file_edit(file_paths, event_name, gap_duration):
 
     return zip_file_url
 
+
+def event_invite_email(event_name: str, email: str, user_name: str):
+    subject = "Event Invite from EventHub"
+    email_data = {
+        'user_name': user_name,
+        "event_name": event_name,
+    }
+    html_email = get_template("../templates/main/user_invite_email.html").render(email_data)
+    from_email = 'eventhub-website@outlook.com'
+    email_msg = EmailMessage(
+        subject,
+        html_email,
+        from_email,
+        [email]
+    )
+    email_msg.content_subtype = "html"
+    email_msg.send()

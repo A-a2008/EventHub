@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, SubEvents, Files
+from .models import Event, SubEvents, Files, InvitedPerson
 
 # Register your models here.
 
@@ -23,6 +23,7 @@ class SubEventsAdmin(admin.ModelAdmin):
 
 admin.site.register(Event, EventsAdmin)
 admin.site.register(SubEvents, SubEventsAdmin)
+admin.site.register(InvitedPerson)
 
 
 admin.site.site_title = "EventHub"

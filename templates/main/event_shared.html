@@ -29,7 +29,16 @@
             <p>Event Sharing success</p>
         </div>
     </header>
+    {% if user_created %}
     <p>{{ event.name }} has been shared with <b>"{{ user_to.first_name }} {{ user_to.last_name }}"</b> successfully!</p>
     <p><b>{{ user_to.first_name }}</b> can view this event in their event list.</p>
+    {% else %}
+    <p>{{ event.name }} has been shared with <b>"{{ user_to }}"</b> successfully!</p>
+    {% if not updated %}
+    <p>When the invited user creates an account in this website with this email, that user shall be added to this event.</p>
+    {% else %}
+    <p>The user's permissions have been updated.</p>
+    {% endif %}
+    {% endif %}
 </article>
 {% endblock %}

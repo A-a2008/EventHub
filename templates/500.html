@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li><a href="/">Home</a></li>
+{% endblock %}
+
+{% block menu %}
+<li>
+    <a href="/">
+        <h3>Home</h3>
+    </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">500</a></h2>
+            <p>Server</p>
+        </div>
+    </header>
+    <p>Sorry for the inconvenience caused. As it appears to be a server error, it has been reported!</p>
+    <input onclick="history.back()" type="submit" value="Go Back" />
+</article>
+{% endblock %}
